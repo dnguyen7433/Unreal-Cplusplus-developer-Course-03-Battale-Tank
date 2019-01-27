@@ -3,16 +3,9 @@
 #include "MyTankPlayerController.h"
 #include "GameFramework/Controller.h"
 
-ATank* AMyTankPlayerController::GetControlledTank() const {
-	
-	return Cast<ATank> (GetPawn());
-}
-
 void AMyTankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("AMyTankPlayerController BeginPlay()!!!"))
-
 	ATank* ControlledTank = GetControlledTank();
 	if (!ControlledTank) {
 		UE_LOG(LogTemp, Warning, TEXT("The player controller is not possessing the tank!!!"))
@@ -21,3 +14,26 @@ void AMyTankPlayerController::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("The player controller is possessing %s!!!"), *(ControlledTank->GetName()))
 	}
 }
+
+void AMyTankPlayerController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+		AimTowardsCrossHair();
+}
+
+void AMyTankPlayerController::AimTowardsCrossHair()
+{
+	if (!GetControlledTank()) { return; }
+	// Get the world location if the linetrace through the crosshair
+	// If hit the landscape
+		// Tell the controlled tank to aim at this point
+}
+
+ATank* AMyTankPlayerController::GetControlledTank() const {
+	
+	return Cast<ATank> (GetPawn());
+}
+
+
+
+
