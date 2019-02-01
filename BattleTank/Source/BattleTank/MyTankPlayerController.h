@@ -22,5 +22,5 @@ public:
 
 	void AimTowardsCrossHair();
 	// Post: Moving the tank barrel so that a shot would hit the crosshair intersects the world
-	
+	bool GetSightRayHitLocation(FVector&) const; // Return true if the line trace hit the HitLocation
 };
