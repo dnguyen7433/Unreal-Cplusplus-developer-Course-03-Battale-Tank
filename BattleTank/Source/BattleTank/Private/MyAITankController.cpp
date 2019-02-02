@@ -23,6 +23,14 @@ void AMyAITankController::BeginPlay()
 	}
 }
 
+void AMyAITankController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	if (!GetAIControlledTank()) { return; }
+	if (!GetPlayerTank()) { return; }
+	GetAIControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());
+}
+
 ATank * AMyAITankController::GetAIControlledTank() const
 
 {

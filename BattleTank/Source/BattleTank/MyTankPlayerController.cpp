@@ -29,9 +29,7 @@ void AMyTankPlayerController::AimTowardsCrossHair()
 	if (!GetControlledTank()) { return; }
 	FVector HitLocation; 
 	if (GetSightRayHitLocation(HitLocation)) { // Going to LineTrace
-		UE_LOG(LogTemp, Warning, TEXT("Hit Location: %s"), *(HitLocation.ToString()))
-			
-				// TODO Tell the controlled tank to aim at this point
+		GetControlledTank()->AimAt(HitLocation); // Tell the controlled tank what to do when the line trace hit the object
 	}
 }
 // Get the line trace through the cross hair, return true if hits landscape
