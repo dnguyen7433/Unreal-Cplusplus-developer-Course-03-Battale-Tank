@@ -24,6 +24,8 @@ public:
 	// Post: Moving the tank barrel so that a shot would hit the crosshair intersects the world
 	bool GetSightRayHitLocation(FVector&) const; // Return true if the line trace hit the HitLocation
 
+	bool GetLookDirection(FVector2D ScreenLocation, FVector & LookDirection) const;
+
 	UPROPERTY(EditAnywhere)
 	float CrossHairXLocation = 0.5;
 	UPROPERTY(EditAnywhere)

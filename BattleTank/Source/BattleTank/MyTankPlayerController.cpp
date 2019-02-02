@@ -2,6 +2,7 @@
 
 #include "MyTankPlayerController.h"
 #include "GameFramework/Controller.h"
+#include "GameFramework/PlayerController.h"
 
 void AMyTankPlayerController::BeginPlay()
 {
@@ -41,8 +42,15 @@ bool AMyTankPlayerController::GetSightRayHitLocation (FVector& HitLocation) cons
 		// Getting the Location of the crosshair
 	auto ScreenLocation = FVector2D ((CrossHairXLocation*ViewportSizeX), (CrossHairYLocation*ViewportSizeY));
 	//De-project the screen position of the crosshair to a world direction
-	//Linetrace along that direction, and see what we hit (up to max range)
+	FVector LookDirection;
+	if (GetLookDirection(ScreenLocation, LookDirection)) {
+		//Linetrace along that direction, and see what we hit (up to max range)
+	}
 	return true;
+}
+bool AMyTankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const {
+	FVector WorldLocation; // To be discarded
+	return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, WorldLocation, LookDirection);
 }
 
 ATank* AMyTankPlayerController::GetControlledTank() const {
