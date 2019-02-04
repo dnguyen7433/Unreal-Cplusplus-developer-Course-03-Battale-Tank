@@ -1,5 +1,4 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
 #include "MyTankPlayerController.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/PlayerController.h"
@@ -30,6 +29,7 @@ void AMyTankPlayerController::AimTowardsCrossHair()
 	FVector HitLocation; 
 	if (GetSightRayHitLocation(HitLocation)) { // Going to LineTrace
 		GetControlledTank()->AimAt(HitLocation); // Tell the controlled tank what to do when the line trace hit the object
+		
 	}
 }
 // Get the line trace through the cross hair, return true if hits landscape
