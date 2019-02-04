@@ -3,6 +3,7 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/PlayerController.h"
 #include "Engine/World.h"
+#include "Tank.h"
 #include "GameFramework/Actor.h"
 
 void AMyTankPlayerController::BeginPlay()

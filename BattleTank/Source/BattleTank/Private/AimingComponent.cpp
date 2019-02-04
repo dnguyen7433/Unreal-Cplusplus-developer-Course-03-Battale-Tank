@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Actor.h"
 #include "Engine/World.h"
+#include "Public/CollisionQueryParams.h"
 #include "AimingComponent.h"
 
 
@@ -13,8 +14,7 @@ UAimingComponent::UAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	bWantsBeginPlay = true;
-
+	
 	PrimaryComponentTick.bCanEverTick = true; // TODO Should this really tick?
 
 
@@ -37,7 +37,13 @@ void UAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		StartLocation,
 		HitLocation,
 		LaunchSpeed,
-		ESuggestProjVelocityTraceOption::DoNotTrace
+		false,
+		0,
+		0
+		,ESuggestProjVelocityTraceOption::DoNotTrace,
+		FCollisionResponseParams::DefaultResponseParam,
+		TArray<AActor*>(),
+		true //debug draw
 		);
 	if (bHaveAimSolution)
 
