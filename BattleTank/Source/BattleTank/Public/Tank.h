@@ -9,6 +9,7 @@
 #include "Tank.generated.h"
 class UAimingComponent;
 class UTankBarrel;
+class UTurret;
 UCLASS()
 class BATTLETANK_API ATank : public APawn
 {
@@ -21,6 +22,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrelReference (UTankBarrel* BarrelToSet);
+
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void SetTurretReference(UTurret* TurretToSet);
 protected:
 	UAimingComponent* TankAimingComponent = nullptr;
 private:
@@ -28,7 +32,7 @@ private:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(EditAnywhere, Category = Firing)
-	float LaunchSpeed = 5000; // TODO Finding the sensible default value of launch speed
+	float LaunchSpeed = 4000; 
 	
 	
 };
