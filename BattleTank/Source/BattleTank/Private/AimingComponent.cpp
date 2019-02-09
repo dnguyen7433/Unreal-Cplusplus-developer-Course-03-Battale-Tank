@@ -40,10 +40,10 @@ void UAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		false,
 		0,
 		0
-		,ESuggestProjVelocityTraceOption::DoNotTrace,
-		FCollisionResponseParams::DefaultResponseParam,
-		TArray<AActor*>(),
-		true //debug draw
+		,ESuggestProjVelocityTraceOption::DoNotTrace
+		//, FCollisionResponseParams::DefaultResponseParam,
+		//TArray<AActor*>(),
+		//true //debug draw
 		);
 	if (bHaveAimSolution)
 
@@ -78,7 +78,7 @@ void UAimingComponent::MoveBarrel(FVector AimDirection)
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
 
 		// Move tank barrel
-	Barrel->Elevate(5);
+	Barrel->Elevate(DeltaRotator.Pitch); // TODO remove the magic number
 }
 
 void UAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)

@@ -17,7 +17,7 @@ public:
 	void Elevate(float RelativeSpeed); // TODO Set relative speed from -1 to 1x
 private:
 	UPROPERTY(EditAnywhere, Category = Setup)
-	float MaxDegreePerSecond = 20;
+	float MaxDegreePerSecond = 5;
 
 	UPROPERTY(EditAnywhere, Category = Setup)
 	float MaxDegree = 40;
