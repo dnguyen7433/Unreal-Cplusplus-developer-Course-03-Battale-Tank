@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "UObject/UObjectGlobals.h"
-
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 class UAimingComponent;
