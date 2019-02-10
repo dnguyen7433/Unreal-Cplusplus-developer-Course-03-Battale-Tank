@@ -35,6 +35,12 @@ void ATank::SetTurretReference(UTurret * TurretToSet)
 	TankAimingComponent->SetTurretReference(TurretToSet);
 }
 
+void ATank::Fire()
+{
+	
+	UE_LOG(LogTemp, Warning, TEXT("Firing."))
+}
+
 
 // Called to bind functionality to input
 void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

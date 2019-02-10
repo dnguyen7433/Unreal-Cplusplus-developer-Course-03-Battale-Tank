@@ -50,24 +50,10 @@ void UAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	{
 
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
-
-		
 		MoveBarrel(AimDirection);
-
-		auto Time = GetWorld()->GetTimeSeconds();
-
-		UE_LOG(LogTemp, Warning, TEXT("%f: Aim solution found"), Time);
-
 	}
 
-	else
-	{
-		auto Time = GetWorld()->GetTimeSeconds();
-
-		UE_LOG(LogTemp, Warning, TEXT("%f: No aim solve found"), Time);
-
-	}
-
+	
 	// If no solution found do nothing
 }
 // Rotate the barrel according to the aim direction
