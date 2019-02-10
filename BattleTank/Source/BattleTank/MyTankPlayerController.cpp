@@ -73,8 +73,9 @@ bool AMyTankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector
 }
 
 ATank* AMyTankPlayerController::GetControlledTank() const {
-	
-	return Cast<ATank> (GetPawn());
+	auto PlayerTank = Cast<ATank>(GetPawn());
+	if (!PlayerTank) { return nullptr; }
+	return PlayerTank ;
 }
 
 
