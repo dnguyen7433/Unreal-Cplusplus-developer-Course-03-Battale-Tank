@@ -16,8 +16,5 @@ class BATTLETANK_API AMyAITankController : public AAIController
 private:
 	void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
-	ATank* GetAIControlledTank() const;
-	//Post: Possessing tanks that are not possessed by the player
-	ATank* GetPlayerTank() const;
-	//Post: Return the player's controlled tank with the purpose of aiming
+	
 };
