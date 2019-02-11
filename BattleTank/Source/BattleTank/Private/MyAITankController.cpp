@@ -18,7 +18,7 @@ void AMyAITankController::Tick(float DeltaTime)
 
 	auto PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	if (!PlayerTank) { return; }
-
+	MoveToActor(PlayerTank, AcceptanceRadius); // TODO Check radius in cemtimeter
 	AIControlledTank->AimAt(PlayerTank->GetActorLocation());
 	AIControlledTank->Fire(); // TODO Every reload time per second
 }

@@ -10,6 +10,7 @@ class UAimingComponent;
 class UTankBarrel;
 class UTurret;
 class AProjectile;
+class UTankMovementComponent;
 UCLASS()
 class BATTLETANK_API ATank : public APawn
 {
@@ -30,6 +31,7 @@ public:
 	void Fire();
 protected:
 	UAimingComponent* TankAimingComponent = nullptr;
+	
 private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

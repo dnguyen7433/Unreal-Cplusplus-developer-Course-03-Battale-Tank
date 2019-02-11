@@ -2,6 +2,7 @@
 
 #include "Tank.h"
 #include "AimingComponent.h"
+#include "TankMovementComponent.h"
 #include "Projectile.h"
 #include "GameFramework/Actor.h"
 #include "Engine/World.h"
