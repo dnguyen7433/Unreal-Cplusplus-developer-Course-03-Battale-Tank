@@ -25,8 +25,12 @@ public:
 	// Sets default values for this component's properties
 	UAimingComponent();
 	void AimAt(FVector HitLocation, float LaunchSpeed);
-	void SetBarrelReference(UTankBarrel* BarrelToSet);
-	void SetTurretReference(UTurret* TurretToSet);
+
+	UFUNCTION(BlueprintCallable, Category = Movement)
+	void Initialize(UTankBarrel *BarrelToSet, UTurret* TurretToSet);
+
+	
+	
 protected: // In order for the subclass "Tank Aiming Component BP" to access the variable
 			// from blueprint
 	UPROPERTY (BlueprintReadOnly, Category = "Variables")

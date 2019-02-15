@@ -24,10 +24,7 @@ UAimingComponent::UAimingComponent()
 void UAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
 	
-	if (!Barrel) { 
-		UE_LOG(LogTemp, Warning, TEXT("Cannot find the barrel"))
-		return;  
-	}
+	if (!Barrel || !Turret) { return; }
 	FVector OutLaunchVelocity(0.0);
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
 	
@@ -56,9 +53,17 @@ void UAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	
 	// If no solution found do nothing
 }
+void UAimingComponent::Initialize(UTankBarrel * BarrelToSet, UTurret * TurretToSet)
+{
+	if (!BarrelToSet || !TurretToSet) {return;}
+	Barrel = BarrelToSet;
+	Turret = TurretToSet;
+}
+
 // Rotate the barrel according to the aim direction
 void UAimingComponent::MoveBarrel(FVector AimDirection)
 {
+	if (!Barrel || !Turret) { return; }
 	//Work out the difference between the current barrel rotation and the aim direction
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
@@ -70,16 +75,6 @@ void UAimingComponent::MoveBarrel(FVector AimDirection)
 }
 
 
-void UAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
-
-{
-	Barrel = BarrelToSet;
-}
-
-void UAimingComponent::SetTurretReference(UTurret * TurretToSet)
-{
-	Turret = TurretToSet;
-}
 
 
 
