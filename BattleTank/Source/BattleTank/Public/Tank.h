@@ -30,6 +30,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void Fire();
 protected:
+	UPROPERTY (BlueprintReadOnly)
 	UAimingComponent* TankAimingComponent = nullptr;
 	
 private:

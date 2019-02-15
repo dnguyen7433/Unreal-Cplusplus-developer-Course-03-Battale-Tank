@@ -16,7 +16,7 @@ class BATTLETANK_API AMyTankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 public:
-	ATank* GetControlledTank() const;
+	
 	virtual void BeginPlay() override;
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -37,4 +37,8 @@ public:
 	float CrossHairYLocation = 0.33333;
 	UPROPERTY(EditDefaultsOnly)
 	float LineTraceRange = 100000;
+
+protected:
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	ATank* GetControlledTank() const;
 };
