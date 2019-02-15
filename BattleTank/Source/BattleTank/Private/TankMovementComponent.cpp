@@ -18,10 +18,15 @@ void UTankMovementComponent::IntendToMoveForward(float Throw)
 
 void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, bool bForceMaxSpeed)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Hello"))
 	//No need to call Super as we are replacing the functionality
-	auto Name = GetOwner()->GetName();
-	UE_LOG(LogTemp, Warning, TEXT("%s move at speed : %s"), *Name, 
-		*(MoveVelocity.ToString()))
+	auto TankForwardDirection = GetOwner()->GetActorForwardVector().GetSafeNormal();
+	//, *(TankForwardDirection.ToString()))
+	auto AIForwardIntention = MoveVelocity.GetSafeNormal();
+	
+	auto ForwardThrow = FVector::DotProduct(TankForwardDirection, AIForwardIntention);
+	IntendToMoveForward(ForwardThrow);
+	
 	
 }
 
