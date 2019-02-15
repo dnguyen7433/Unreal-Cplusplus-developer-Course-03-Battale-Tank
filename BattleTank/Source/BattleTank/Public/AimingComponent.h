@@ -9,6 +9,12 @@
 
 class UTankBarrel;
 class UTurret;
+UENUM()
+enum class EFiringStatus: uint8 {
+	Locked,
+	Aiming,
+	Reloading
+};
 //  Hold barrel's properties and Elevate Method
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANK_API UAimingComponent : public UActorComponent
@@ -21,6 +27,10 @@ public:
 	void AimAt(FVector HitLocation, float LaunchSpeed);
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
 	void SetTurretReference(UTurret* TurretToSet);
+protected: // In order for the subclass "Tank Aiming Component BP" to access the variable
+			// from blueprint
+	UPROPERTY (BlueprintReadOnly, Category = "Variables")
+	EFiringStatus FiringStatus = EFiringStatus::Reloading;
 	
 private:
 	UTankBarrel* Barrel = nullptr;  
