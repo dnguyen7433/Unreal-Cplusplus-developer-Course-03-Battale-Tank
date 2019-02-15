@@ -16,17 +16,32 @@ void UTankMovementComponent::IntendToMoveForward(float Throw)
 	// TODO Prevent Double-Speed due to dual control
 }
 
+void UTankMovementComponent::IntendToTurnRight(float Throw)
+{
+	if (!LeftTrack || !RightTrack) { return;  }
+	UE_LOG(LogTemp, Warning, TEXT("Inside IntendToTurnRight"))
+	LeftTrack->SetThrottles(Throw);
+	RightTrack->SetThrottles(-Throw);
+}
+
 void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, bool bForceMaxSpeed)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Hello"))
+	
 	//No need to call Super as we are replacing the functionality
 	auto TankForwardDirection = GetOwner()->GetActorForwardVector().GetSafeNormal();
 	//, *(TankForwardDirection.ToString()))
 	auto AIForwardIntention = MoveVelocity.GetSafeNormal();
 	
-	auto ForwardThrow = FVector::DotProduct(TankForwardDirection, AIForwardIntention);
+	auto ForwardThrow = FVector::DotProduct( AIForwardIntention, TankForwardDirection );
 	IntendToMoveForward(ForwardThrow);
 	
-	
+	auto RightThrow = FVector::CrossProduct(TankForwardDirection, AIForwardIntention) ;
+	auto SteeringMagnitude = RightThrow.Size();
+	if ((RightThrow.X) <= 0)
+	IntendToTurnRight(- SteeringMagnitude);
+	else {
+		IntendToTurnRight(SteeringMagnitude);
+	}
+	UE_LOG(LogTemp, Warning, TEXT("%f"), (SteeringMagnitude ))
 }
 
