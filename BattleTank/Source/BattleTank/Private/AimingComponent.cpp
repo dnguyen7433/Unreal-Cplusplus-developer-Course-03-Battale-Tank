@@ -3,6 +3,7 @@
 #include "AimingComponent.h"
 #include "TankBarrel.h"
 #include "Turret.h"
+#include "Projectile.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Actor.h"
 #include "Engine/World.h"
@@ -38,15 +39,11 @@ void UAimingComponent::AimAt(FVector HitLocation)
 		false,
 		0,
 		0
-		,ESuggestProjVelocityTraceOption::DoNotTrace
-		//, FCollisionResponseParams::DefaultResponseParam,
-		//TArray<AActor*>(),
-		//true //debug draw
+		,ESuggestProjVelocityTraceOption::DoNotTrace // Here is the bug if commented oout
 		);
 	if (bHaveAimSolution)
 
 	{
-
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
 		MoveBarrel(AimDirection);
 	}
@@ -73,6 +70,22 @@ void UAimingComponent::MoveBarrel(FVector AimDirection)
 		// Move tank barrel
 	Barrel->Elevate(DeltaRotator.Pitch); 
 	Turret->Rotate(DeltaRotator.Yaw);
+}
+
+void UAimingComponent::Fire()
+{
+	if (!ensure(Barrel)) { return; }
+	bool IsReloaded = (FPlatformTime::Seconds() - LastTimeFire) > ReloadTimePerSecond;
+	if (IsReloaded) {
+		// Otherwise, spawning the projectile at the socket position of the barrel
+		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
+			ProjectileBlueprint,
+			Barrel->GetSocketLocation(FName("Projectile")),
+			Barrel->GetSocketRotation(FName("Projectile")));
+		if (!ensure(Projectile)) { return; }
+		Projectile->LaunchProjectile(LaunchSpeed);
+		LastTimeFire = FPlatformTime::Seconds();
+	}
 }
 
 

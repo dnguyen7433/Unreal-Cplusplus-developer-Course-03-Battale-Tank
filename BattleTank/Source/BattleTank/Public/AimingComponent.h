@@ -6,7 +6,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "AimingComponent.generated.h"
-
+class AProjectile;
 class UTankBarrel;
 class UTurret;
 UENUM()
@@ -24,15 +24,16 @@ class BATTLETANK_API UAimingComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UAimingComponent();
+
 	void AimAt(FVector HitLocation);
 
-	UPROPERTY(EditDefaultsOnly, Category = Firing)
-	float LaunchSpeed = 4000;
+	void MoveBarrel(FVector AimDirection);
+
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+	void Fire();
 
 	UFUNCTION(BlueprintCallable, Category = Movement)
 	void Initialize(UTankBarrel *BarrelToSet, UTurret* TurretToSet);
-
-	
 	
 protected: // In order for the subclass "Tank Aiming Component BP" to access the variable
 			// from blueprint
@@ -40,9 +41,19 @@ protected: // In order for the subclass "Tank Aiming Component BP" to access the
 	EFiringStatus FiringStatus = EFiringStatus::Reloading;
 	
 private:
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	TSubclassOf<AProjectile> ProjectileBlueprint;
+
 	UTankBarrel* Barrel = nullptr;  
-	void MoveBarrel(FVector AimDirection);
 	
 	UTurret* Turret = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float LaunchSpeed = 4000;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float ReloadTimePerSecond = 3;
+
+	double LastTimeFire = 1;
 	
 };
