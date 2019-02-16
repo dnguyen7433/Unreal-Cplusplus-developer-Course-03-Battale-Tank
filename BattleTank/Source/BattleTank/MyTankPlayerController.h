@@ -10,7 +10,7 @@
 /**
  * Responsible for helping players to aim.
  */
-class ATank;
+
 class UAimingComponent;
 UCLASS()
 class BATTLETANK_API AMyTankPlayerController : public APlayerController
@@ -40,9 +40,7 @@ public:
 	float LineTraceRange = 100000;
 
 protected:
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-	ATank* GetControlledTank() const;
-
+	
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 	void FoundAimingComponent(UAimingComponent*  AimCompRef);
 };

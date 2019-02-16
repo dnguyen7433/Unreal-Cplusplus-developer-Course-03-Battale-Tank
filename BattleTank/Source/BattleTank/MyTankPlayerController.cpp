@@ -4,17 +4,14 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/PlayerController.h"
 #include "Engine/World.h"
-#include "Tank.h"
 #include "GameFramework/Actor.h"
 
 void AMyTankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	ATank* ControlledTank = GetControlledTank();
-	auto AimingComponent = GetControlledTank()->FindComponentByClass<UAimingComponent>();
-	if (!ensure(AimingComponent)) {return;}
+	auto AimingComponent = GetPawn()->FindComponentByClass<UAimingComponent>();
+	if (!ensure(AimingComponent)) { return; }
 		FoundAimingComponent(AimingComponent);
-	
 }
 
 void AMyTankPlayerController::Tick(float DeltaTime)
@@ -25,11 +22,11 @@ void AMyTankPlayerController::Tick(float DeltaTime)
 
 void AMyTankPlayerController::AimTowardsCrossHair()
 {
-	if (!ensure(GetControlledTank())) { return; }
+	auto AimingComponent = GetPawn()->FindComponentByClass<UAimingComponent>();
+	if (!ensure(AimingComponent)) { return; }
 	FVector HitLocation; 
 	if (GetSightRayHitLocation(HitLocation)) { // Going to LineTrace
-		GetControlledTank()->AimAt(HitLocation); // Tell the controlled tank what to do when the line trace hit the object
-		
+		AimingComponent->AimAt(HitLocation);// Tell the controlled tank what to do when the line trace hit the object
 	}
 }
 // Get the line trace through the cross hair, return true if hits landscape
@@ -71,11 +68,7 @@ bool AMyTankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector
 	return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, WorldLocation, LookDirection);
 }
 
-ATank* AMyTankPlayerController::GetControlledTank() const {
-	auto PlayerTank = Cast<ATank>(GetPawn());
-	if (!ensure (PlayerTank)) { return nullptr; }
-	return PlayerTank ;
-}
+
 
 
 

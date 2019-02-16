@@ -21,7 +21,7 @@ UAimingComponent::UAimingComponent()
 }
 
 
-void UAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
+void UAimingComponent::AimAt(FVector HitLocation)
 {
 	
 	if (!ensure(Barrel || Turret)) { return; }

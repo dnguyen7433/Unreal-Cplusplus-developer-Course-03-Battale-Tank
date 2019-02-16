@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Tank.h"
-#include "AimingComponent.h"
 #include "TankMovementComponent.h"
 #include "Projectile.h"
 #include "GameFramework/Actor.h"
@@ -17,17 +16,6 @@ ATank::ATank()
 	// No need to protect the pointer in the constructor as it is constructed here
 	
 }
-
-void ATank::AimAt(FVector HitLocation)
-{	
-	AimingComponent = FindComponentByClass<UAimingComponent>();
-	if (!ensure(AimingComponent)) { return; }
-	UE_LOG(LogTemp, Warning, TEXT("In AimAt at Tank.cpp"))
-	AimingComponent->AimAt(HitLocation, LaunchSpeed);
-}
-
-
-
 void ATank::Fire()
 {
 	if (!ensure(Barrel)) { return; }

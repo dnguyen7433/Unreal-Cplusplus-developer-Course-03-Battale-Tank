@@ -19,12 +19,8 @@ class BATTLETANK_API ATank : public APawn
 public:
 	// Sets default values for this pawn's properties
 	ATank();
-	void AimAt(FVector HitLocation);
-
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void Fire();
-protected:
-	UAimingComponent* AimingComponent = nullptr;
 private:
 	virtual void BeginPlay() override;
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
