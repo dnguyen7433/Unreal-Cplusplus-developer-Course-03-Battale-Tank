@@ -19,6 +19,8 @@ void AMyAITankController::Tick(float DeltaTime)
 
 	auto PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
 	if (!ensure(PlayerTank)) { return; }
+	// No need to hash include for MovementComponent because (MoveToActor) AIController and 
+	// (RequestDirectMove)Nav Movement Component are linked in the Parent Classes already
 	MoveToActor(PlayerTank, AcceptanceRadius); // TODO Check radius in cemtimeter
 
 	auto AimingComponent = AIControlledTank->FindComponentByClass<UAimingComponent>();

@@ -9,7 +9,7 @@
 // Sets default values
 ATank::ATank()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	// No need to protect the pointer in the constructor as it is constructed here
 	
 }
