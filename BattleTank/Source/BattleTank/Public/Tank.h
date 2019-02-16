@@ -31,7 +31,7 @@ private:
 	TSubclassOf<AProjectile> ProjectileBlueprint;
 
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
-	float LaunchSpeed = 4000; 
+	float LaunchSpeed = 4000; // TODO Remove when Fire() method is removed
 
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float ReloadTimePerSecond = 3;

@@ -12,12 +12,9 @@ void AMyTankPlayerController::BeginPlay()
 	Super::BeginPlay();
 	ATank* ControlledTank = GetControlledTank();
 	auto AimingComponent = GetControlledTank()->FindComponentByClass<UAimingComponent>();
-	if (AimingComponent) {
+	if (!ensure(AimingComponent)) {return;}
 		FoundAimingComponent(AimingComponent);
-	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("LOKI: Can't find Aiming Component In The Begin Play"))
-	}
+	
 }
 
 void AMyTankPlayerController::Tick(float DeltaTime)

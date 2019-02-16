@@ -13,15 +13,16 @@
 // Sets default values
 ATank::ATank()
 {
-	UE_LOG(LogTemp, Warning, TEXT("KINGKONG: TankCPP_Construct"))
 	PrimaryActorTick.bCanEverTick = true;
 	// No need to protect the pointer in the constructor as it is constructed here
-
+	
 }
 
 void ATank::AimAt(FVector HitLocation)
 {	
+	AimingComponent = FindComponentByClass<UAimingComponent>();
 	if (!ensure(AimingComponent)) { return; }
+	UE_LOG(LogTemp, Warning, TEXT("In AimAt at Tank.cpp"))
 	AimingComponent->AimAt(HitLocation, LaunchSpeed);
 }
 
@@ -46,7 +47,6 @@ void ATank::Fire()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay(); // Needed for BeginPlay in Tank_BP
-	UE_LOG(LogTemp, Warning, TEXT("KINGKONG: TankCPP_BeginPlay"))
 }
 
 

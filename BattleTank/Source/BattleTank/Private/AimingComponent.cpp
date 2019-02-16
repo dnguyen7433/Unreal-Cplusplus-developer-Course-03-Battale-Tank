@@ -25,6 +25,7 @@ void UAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
 	
 	if (!ensure(Barrel || Turret)) { return; }
+	
 	FVector OutLaunchVelocity(0.0);
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
 	
