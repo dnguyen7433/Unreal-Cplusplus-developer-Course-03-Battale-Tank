@@ -1,5 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "MyTankPlayerController.h"
+#include "AimingComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/PlayerController.h"
 #include "Engine/World.h"
@@ -10,11 +11,12 @@ void AMyTankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 	ATank* ControlledTank = GetControlledTank();
-	if (!ControlledTank) {
-		UE_LOG(LogTemp, Warning, TEXT("The player controller is not possessing the tank!!!"))
+	auto AimingComponent = GetControlledTank()->FindComponentByClass<UAimingComponent>();
+	if (AimingComponent) {
+		FoundAimingComponent(AimingComponent);
 	}
 	else {
-		UE_LOG(LogTemp, Warning, TEXT("The player controller is possessing %s!!!"), *(ControlledTank->GetName()))
+		UE_LOG(LogTemp, Warning, TEXT("LOKI: Can't find Aiming Component In The Begin Play"))
 	}
 }
 
@@ -26,7 +28,7 @@ void AMyTankPlayerController::Tick(float DeltaTime)
 
 void AMyTankPlayerController::AimTowardsCrossHair()
 {
-	if (!GetControlledTank()) { return; }
+	if (!ensure(GetControlledTank())) { return; }
 	FVector HitLocation; 
 	if (GetSightRayHitLocation(HitLocation)) { // Going to LineTrace
 		GetControlledTank()->AimAt(HitLocation); // Tell the controlled tank what to do when the line trace hit the object
@@ -74,9 +76,11 @@ bool AMyTankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector
 
 ATank* AMyTankPlayerController::GetControlledTank() const {
 	auto PlayerTank = Cast<ATank>(GetPawn());
-	if (!PlayerTank) { return nullptr; }
+	if (!ensure (PlayerTank)) { return nullptr; }
 	return PlayerTank ;
 }
+
+
 
 
 

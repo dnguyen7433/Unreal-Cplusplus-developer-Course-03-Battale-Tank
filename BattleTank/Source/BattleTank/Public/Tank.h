@@ -26,6 +26,7 @@ public:
 protected:
 	UAimingComponent* AimingComponent = nullptr;
 private:
+	virtual void BeginPlay() override;
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<AProjectile> ProjectileBlueprint;
 

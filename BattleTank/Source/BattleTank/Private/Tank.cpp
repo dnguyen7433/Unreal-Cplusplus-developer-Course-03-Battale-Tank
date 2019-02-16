@@ -13,6 +13,7 @@
 // Sets default values
 ATank::ATank()
 {
+	UE_LOG(LogTemp, Warning, TEXT("KINGKONG: TankCPP_Construct"))
 	PrimaryActorTick.bCanEverTick = true;
 	// No need to protect the pointer in the constructor as it is constructed here
 
@@ -20,7 +21,7 @@ ATank::ATank()
 
 void ATank::AimAt(FVector HitLocation)
 {	
-	if (!AimingComponent) { return; }
+	if (!ensure(AimingComponent)) { return; }
 	AimingComponent->AimAt(HitLocation, LaunchSpeed);
 }
 
@@ -28,18 +29,24 @@ void ATank::AimAt(FVector HitLocation)
 
 void ATank::Fire()
 {
-	if (!Barrel) { return; }
+	if (!ensure(Barrel)) { return; }
 	bool IsReloaded = (FPlatformTime::Seconds() - LastTimeFire) > ReloadTimePerSecond;
-	if (Barrel && IsReloaded) {
+	if (IsReloaded) {
 		// Otherwise, spawning the projectile at the socket position of the barrel
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBlueprint,
 			Barrel->GetSocketLocation(FName("Projectile")),
 			Barrel->GetSocketRotation(FName("Projectile")));
-		if (!Projectile) { return; }
+		if (!ensure(Projectile)) { return; }
 		Projectile->LaunchProjectile(LaunchSpeed);
 		LastTimeFire = FPlatformTime::Seconds();
 	}
+}
+
+void ATank::BeginPlay()
+{
+	Super::BeginPlay(); // Needed for BeginPlay in Tank_BP
+	UE_LOG(LogTemp, Warning, TEXT("KINGKONG: TankCPP_BeginPlay"))
 }
 
 
