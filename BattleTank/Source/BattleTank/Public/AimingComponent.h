@@ -24,10 +24,17 @@ class BATTLETANK_API UAimingComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UAimingComponent();
+	virtual void BeginPlay() override;
+
+	virtual void TickComponent(float DeltaTime, 
+		enum ELevelTick TickType, 
+		FActorComponentTickFunction *ThisTickFunction) override;
 
 	void AimAt(FVector HitLocation);
 
 	void MoveBarrel(FVector AimDirection);
+
+	bool IsBarrelMoving();
 
 	UFUNCTION(BlueprintCallable, Category = "Firing")
 	void Fire();
@@ -52,8 +59,10 @@ private:
 	float LaunchSpeed = 4000;
 
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
-	float ReloadTimePerSecond = 3;
+	float ReloadTimeInSecond = 3;
 
 	double LastTimeFire = 1;
+
+	FVector AimDirection ;
 	
 };

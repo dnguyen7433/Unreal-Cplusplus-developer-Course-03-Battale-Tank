@@ -15,16 +15,39 @@ UAimingComponent::UAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	
-	PrimaryComponentTick.bCanEverTick = false; 
+
+	PrimaryComponentTick.bCanEverTick = true;
 
 
 }
+void UAimingComponent::BeginPlay()
+{
+	Super::BeginPlay();
+	// Make sure that AI Tank only fire after initial reload (3s)
+	LastTimeFire =  GetWorld()->GetTimeSeconds();
+}
+
+void UAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	
+	if (((GetWorld()->GetTimeSeconds()) - LastTimeFire) < ReloadTimeInSecond){
+		FiringStatus = EFiringStatus::Reloading;
+	}
+	else if (IsBarrelMoving()) {
+		FiringStatus = EFiringStatus::Aiming;
+	}
+	else {
+		FiringStatus = EFiringStatus::Locked;
+	}
+	
+}
+
 
 
 void UAimingComponent::AimAt(FVector HitLocation)
 {
-	
+	AimDirection = HitLocation;
 	if (!ensure(Barrel || Turret)) { return; }
 	
 	FVector OutLaunchVelocity(0.0);
@@ -44,8 +67,8 @@ void UAimingComponent::AimAt(FVector HitLocation)
 	if (bHaveAimSolution)
 
 	{
-		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
-		MoveBarrel(AimDirection);
+		auto Target = OutLaunchVelocity.GetSafeNormal();
+		MoveBarrel(Target);
 	}
 
 	
@@ -59,12 +82,12 @@ void UAimingComponent::Initialize(UTankBarrel * BarrelToSet, UTurret * TurretToS
 }
 
 // Rotate the barrel according to the aim direction
-void UAimingComponent::MoveBarrel(FVector AimDirection)
+void UAimingComponent::MoveBarrel(FVector Target)
 {
 	if (!ensure(Barrel || Turret)) { return; }
 	//Work out the difference between the current barrel rotation and the aim direction
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
-	auto AimAsRotator = AimDirection.Rotation();
+	auto AimAsRotator = Target.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
 
 		// Move tank barrel
@@ -72,19 +95,27 @@ void UAimingComponent::MoveBarrel(FVector AimDirection)
 	Turret->Rotate(DeltaRotator.Yaw);
 }
 
+bool UAimingComponent::IsBarrelMoving()
+{
+	if (!ensure(Barrel)) { return false; }
+	auto BarrelDirection = Barrel->GetForwardVector();
+	return (!(BarrelDirection.Equals(AimDirection, 0.01)));
+}
+
 void UAimingComponent::Fire()
 {
-	if (!ensure(Barrel)) { return; }
-	bool IsReloaded = (FPlatformTime::Seconds() - LastTimeFire) > ReloadTimePerSecond;
-	if (IsReloaded) {
+	
+	
+	if (FiringStatus != EFiringStatus::Reloading) {
 		// Otherwise, spawning the projectile at the socket position of the barrel
+		if (!ensure(Barrel)) { return; }
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBlueprint,
 			Barrel->GetSocketLocation(FName("Projectile")),
 			Barrel->GetSocketRotation(FName("Projectile")));
 		if (!ensure(Projectile)) { return; }
 		Projectile->LaunchProjectile(LaunchSpeed);
-		LastTimeFire = FPlatformTime::Seconds();
+		LastTimeFire = GetWorld()->GetTimeSeconds();
 	}
 }
 

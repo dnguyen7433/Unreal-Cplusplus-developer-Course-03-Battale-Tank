@@ -22,6 +22,7 @@ void AMyTankPlayerController::Tick(float DeltaTime)
 
 void AMyTankPlayerController::AimTowardsCrossHair()
 {
+	if (!GetPawn()) { return; } //e.g. player's tank is dead or destroyed
 	auto AimingComponent = GetPawn()->FindComponentByClass<UAimingComponent>();
 	if (!ensure(AimingComponent)) { return; }
 	FVector HitLocation; 
