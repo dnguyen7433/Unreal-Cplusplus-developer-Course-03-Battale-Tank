@@ -92,7 +92,7 @@ EFiringStatus UAimingComponent::GetFiringStatus() const
 	return FiringStatus;
 }
 
-int UAimingComponent::GetRoundsLeft() const
+int32 UAimingComponent::GetRoundsLeft() const
 {
 	return NoOfRounds;
 }

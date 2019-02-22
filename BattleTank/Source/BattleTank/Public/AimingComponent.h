@@ -51,7 +51,7 @@ protected: // In order for the subclass "Tank Aiming Component BP" to access the
 	EFiringStatus FiringStatus = EFiringStatus::Reloading;
 
 	UFUNCTION(BlueprintCallable, Category = "Firing")
-	int GetRoundsLeft() const;
+	int32 GetRoundsLeft() const;
 	
 private:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
@@ -67,10 +67,13 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float ReloadTimeInSecond = 3;
 
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	int32 NoOfRounds = 3;
+
 	double LastTimeFire = 1;
 
 	FVector AimDirection ;
 
-	int NoOfRounds = 10;
+	
 	
 };
