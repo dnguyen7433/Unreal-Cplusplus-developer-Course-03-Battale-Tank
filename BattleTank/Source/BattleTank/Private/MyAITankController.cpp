@@ -26,7 +26,10 @@ void AMyAITankController::Tick(float DeltaTime)
 	auto AimingComponent = AIControlledTank->FindComponentByClass<UAimingComponent>();
 	if (!ensure(AimingComponent)) { return; }
 	AimingComponent->AimAt(PlayerTank->GetActorLocation());
-	AimingComponent->Fire(); // TODO Every reload time per second
+	// Only aim when it is reloaded or aiming status
+	if ((AimingComponent->GetFiringStatus () == EFiringStatus::Locked)) {
+		AimingComponent->Fire(); // TODO Every reload time per second
+	}
 }
 
 

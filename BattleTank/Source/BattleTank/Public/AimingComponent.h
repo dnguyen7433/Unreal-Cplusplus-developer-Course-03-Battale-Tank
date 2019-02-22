@@ -13,8 +13,10 @@ UENUM()
 enum class EFiringStatus: uint8 {
 	Locked,
 	Aiming,
-	Reloading
+	Reloading,
+	OutOfAmmo
 };
+
 //  Hold barrel's properties and Elevate Method
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANK_API UAimingComponent : public UActorComponent
@@ -42,10 +44,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Movement)
 	void Initialize(UTankBarrel *BarrelToSet, UTurret* TurretToSet);
 	
+	EFiringStatus GetFiringStatus() const;
 protected: // In order for the subclass "Tank Aiming Component BP" to access the variable
 			// from blueprint
 	UPROPERTY (BlueprintReadOnly, Category = "Variables")
 	EFiringStatus FiringStatus = EFiringStatus::Reloading;
+
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+	int GetRoundsLeft() const;
 	
 private:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
@@ -64,5 +70,7 @@ private:
 	double LastTimeFire = 1;
 
 	FVector AimDirection ;
+
+	int NoOfRounds = 10;
 	
 };

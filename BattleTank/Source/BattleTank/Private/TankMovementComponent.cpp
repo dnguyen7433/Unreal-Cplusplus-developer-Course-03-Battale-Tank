@@ -13,7 +13,7 @@ void UTankMovementComponent::IntendToMoveForward(float Throw)
 	
 	if (!ensure(LeftTrack || RightTrack)) { return; }
 	LeftTrack->SetThrottles(Throw);
-	RightTrack->SetThrottles(-Throw);
+	RightTrack->SetThrottles(Throw);
 	
 }
 

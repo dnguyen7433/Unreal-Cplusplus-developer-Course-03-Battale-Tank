@@ -26,7 +26,8 @@ void AMyTankPlayerController::AimTowardsCrossHair()
 	auto AimingComponent = GetPawn()->FindComponentByClass<UAimingComponent>();
 	if (!ensure(AimingComponent)) { return; }
 	FVector HitLocation; 
-	if (GetSightRayHitLocation(HitLocation)) { // Going to LineTrace
+	bool bGotHitLocation = GetSightRayHitLocation(HitLocation);
+	if (bGotHitLocation) { // Going to LineTrace
 		AimingComponent->AimAt(HitLocation);// Tell the controlled tank what to do when the line trace hit the object
 	}
 }
@@ -42,10 +43,10 @@ bool AMyTankPlayerController::GetSightRayHitLocation (FVector& HitLocation) cons
 	//De-project the screen position of the crosshair to a world direction
 	FVector LookDirection;
 	if (GetLookDirection(ScreenLocation, LookDirection)) {
-		GetLookVectorHitLocation(LookDirection, HitLocation);
+		return GetLookVectorHitLocation(LookDirection, HitLocation);
 		//Linetrace along that direction, and see what we hit (up to max range)
 	}
-	return true;
+	return false;
 }
 bool AMyTankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const {
 	FHitResult HitResult;

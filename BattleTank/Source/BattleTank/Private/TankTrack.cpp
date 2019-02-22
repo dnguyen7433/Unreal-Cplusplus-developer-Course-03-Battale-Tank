@@ -17,7 +17,7 @@ void UTankTrack::SidewayForce()
 	// Calculate and apply sideway (F = m * a)
 	auto RootComponent = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent());
 	auto CorrectionForce = (CorrectionAcceleration * (RootComponent->GetMass())) / 2;
-	RootComponent->AddForce(CorrectionForce);
+	RootComponent->AddForce(CorrectionForce*0.01);
 }
 
 void UTankTrack::BeginPlay()
@@ -34,17 +34,18 @@ void UTankTrack::OnRegister()
 void UTankTrack::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActors, UPrimitiveComponent * OtherComponents, FVector NormalImpulse, const FHitResult & Hit)
 {
 	// Note: Something funny happens here resulting into a bug in tank movement
+	/*DriveTracks();
+	CurrentThrottle = 0;
+	SidewayForce();
+	*/
+}
+void UTankTrack::SetThrottles(float RelativeSpeed) {
+	CurrentThrottle = FMath::Clamp<float>(RelativeSpeed + CurrentThrottle, -1, 1);
 	DriveTracks();
 	CurrentThrottle = 0;
 	SidewayForce();
 	
-}
-void UTankTrack::SetThrottles(float RelativeSpeed) {
-	CurrentThrottle = FMath::Clamp<float>(RelativeSpeed + CurrentThrottle, -1, 1);
-	/*DriveTracks();
-	SidewayForce();
-	CurrentThrottle = 0;
-	*/
+	
 }
 
 void UTankTrack::DriveTracks()
