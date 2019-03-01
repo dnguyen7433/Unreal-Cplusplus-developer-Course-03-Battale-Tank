@@ -4,6 +4,10 @@
 #include "TankProjectileMovementComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "PhysicsEngine/RadialForceComponent.h"
+#include "GameFramework/Actor.h"
+#include "Public/TimerManager.h"
+#include "Engine/World.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -25,6 +29,9 @@ AProjectile::AProjectile()
 	ImpactBlast = CreateDefaultSubobject<UParticleSystemComponent>(FName("Impact Blast"));
 	ImpactBlast->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	ImpactBlast->bAutoActivate = false;
+
+	ExplosionForce = CreateDefaultSubobject<URadialForceComponent>(FName("ExplosionForce"));
+	ExplosionForce->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 
@@ -39,9 +46,17 @@ void AProjectile::BeginPlay()
 
 void AProjectile::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActors, UPrimitiveComponent * OtherComponents, FVector NormalImpulse, const FHitResult & Hit)
 {
-	UE_LOG(LogTemp, Warning, TEXT("On Hit Event in Projectile"))
+	
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate(true);
+	ExplosionForce->FireImpulse();
+
+	SetRootComponent(ImpactBlast);
+	CollisionMesh->DestroyComponent();
+
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AProjectile::OnTimerExpired, DestroyDelay, false);
+	UE_LOG(LogTemp, Warning, TEXT("TimerHandle: %s"), *(TimerHandle.ToString()))
 }
 
 // Called every frame
@@ -57,4 +72,13 @@ void AProjectile::LaunchProjectile(float Speed)
 	ProjectileMovement->SetVelocityInLocalSpace(FVector::ForwardVector*Speed);
 	ProjectileMovement->Activate(true);
 }
+
+void AProjectile::OnTimerExpired()
+{
+	auto IsDestroyed = Destroy();
+	if (IsDestroyed) {
+		UE_LOG(LogTemp, Warning, TEXT("Projectile is destroyed"))
+	}
+}
+
 

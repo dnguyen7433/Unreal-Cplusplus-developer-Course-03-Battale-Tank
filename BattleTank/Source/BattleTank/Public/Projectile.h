@@ -7,6 +7,7 @@
 #include "Projectile.generated.h"
 class UParticleSystemComponent;
 class UTankProjectileMovementComponent;
+class URadialForceComponent;
 UCLASS()
 class BATTLETANK_API AProjectile : public AActor
 {
@@ -42,6 +43,12 @@ private:
 	UParticleSystemComponent* ImpactBlast = nullptr;
 
 	UTankProjectileMovementComponent* ProjectileMovement = nullptr;
-	
-	
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	URadialForceComponent* ExplosionForce = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	float DestroyDelay = 10.f;
+
+	void OnTimerExpired();
 };
