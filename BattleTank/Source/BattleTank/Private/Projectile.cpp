@@ -8,6 +8,9 @@
 #include "GameFramework/Actor.h"
 #include "Public/TimerManager.h"
 #include "Engine/World.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameFramework/DamageType.h"
+#include "Tank.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -54,9 +57,18 @@ void AProjectile::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActors
 	SetRootComponent(ImpactBlast);
 	CollisionMesh->DestroyComponent();
 
+	UGameplayStatics::ApplyRadialDamage(
+		this, // who the damage start from?
+		DamageAmount, // Damage amount
+		GetActorLocation(), // where the damage starts from?
+		ExplosionForce->Radius, // For radius of the damage
+		UDamageType::StaticClass(),
+		TArray<AActor*>() // Damage all actors
+	);
+		
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AProjectile::OnTimerExpired, DestroyDelay, false);
-	UE_LOG(LogTemp, Warning, TEXT("TimerHandle: %s"), *(TimerHandle.ToString()))
+	
 }
 
 // Called every frame
@@ -75,10 +87,7 @@ void AProjectile::LaunchProjectile(float Speed)
 
 void AProjectile::OnTimerExpired()
 {
-	auto IsDestroyed = Destroy();
-	if (IsDestroyed) {
-		UE_LOG(LogTemp, Warning, TEXT("Projectile is destroyed"))
-	}
+	 Destroy();
 }
 
 

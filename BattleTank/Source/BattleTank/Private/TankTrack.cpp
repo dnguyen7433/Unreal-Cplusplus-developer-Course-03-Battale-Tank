@@ -41,12 +41,14 @@ void UTankTrack::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActors,
 	*/
 }
 void UTankTrack::SetThrottles(float RelativeSpeed) {
+	if (!this) { 
+		UE_LOG(LogTemp, Warning, TEXT("A"))
+		return; }
+	UE_LOG(LogTemp, Warning, TEXT("B"))
 	CurrentThrottle = FMath::Clamp<float>(RelativeSpeed + CurrentThrottle, -1, 1);
 	DriveTracks();
 	CurrentThrottle = 0;
 	SidewayForce();
-	
-	
 }
 
 void UTankTrack::DriveTracks()
