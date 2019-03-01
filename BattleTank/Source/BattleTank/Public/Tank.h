@@ -6,7 +6,7 @@
 #include "UObject/UObjectGlobals.h"
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(Death);
 UCLASS()
 class BATTLETANK_API ATank : public APawn
 {

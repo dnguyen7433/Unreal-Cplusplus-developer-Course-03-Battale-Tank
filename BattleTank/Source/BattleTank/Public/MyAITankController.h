@@ -18,7 +18,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Setup") 
 	float AcceptanceRadius = 8000;
 private:
-	void BeginPlay() override;
+	virtual void BeginPlay() override;
+	virtual void SetPawn(APawn* InPawn) override;
+	//Get called when AI tank controller is possesesed
+	
 	virtual void Tick(float DeltaTime) override;
 	// How close the AI tank can get to the player tank
 	

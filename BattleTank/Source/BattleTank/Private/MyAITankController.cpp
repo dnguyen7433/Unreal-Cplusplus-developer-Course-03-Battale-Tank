@@ -4,10 +4,22 @@
 #include "AimingComponent.h"
 #include "GameFramework/Actor.h"
 #include "Engine/World.h"
+#include "Tank.h" // so we can implement OnDeath();
 
 void AMyAITankController::BeginPlay()
 {
 	Super::BeginPlay();
+}
+// Because At BeginPlay(), AITanks may not be possessed, so we just 
+// explicitly make sure that the method is only used when the AITanks is possessed
+void AMyAITankController::SetPawn(APawn* InPawn)
+{
+	Super::SetPawn(InPawn);
+	if(InPawn) {
+		auto PossessedTank = Cast<ATank>(InPawn);
+		if (!ensure(PossessedTank)) { return; }
+		// TODO Subcribe our local method to the tank's death event
+	}
 }
 
 void AMyAITankController::Tick(float DeltaTime)
